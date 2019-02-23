@@ -3,7 +3,7 @@
 #include "ofMain.h"
 
 class Image {
-	private:
+	public:
 		ofImage img;
 		float imageWidth;
 		float imageHeight;
@@ -11,11 +11,15 @@ class Image {
 		glm::vec3 imageCenter;
 		void calculateImageCenter();
 
-	public:
+	
 		Image();
-		Image(ofImage img, float imageWidth, float imageHeight, glm::vec3 imagePosition, int position);
+		Image(ofImage img, float imageWidth, float imageHeight, 
+			  glm::vec3 imagePosition, int position);
 		float getImageWidth();
 		float getImageHeight();
+		void setPosition(int);
+		void setImagePosition(glm::vec3);
+		int getPosition();
 		void draw();
 
 		int position;
@@ -49,11 +53,17 @@ class ofApp : public ofBaseApp{
 		bool bImageLoaded = false;
 		bool bImageSelected = false;
 		ofRectangle selectionRect;
-		Image selectedImg;
-		void setSelectedImg(Image&);
+		Image *selectedImg;
+		void swap(Image&, Image&);
+		void deleteSelectedImage();
 
 	private:
 		void drawSelectionRect();
 		bool isInsideImage(glm::vec3 point);
+		void moveSelectedImageUp();
+		void moveSelectedImageDown();
 
+		int count = 0; // used to identify where image is placed in vector
+		bool bDrag = false;
+		glm::vec3 lastMouse;
 };

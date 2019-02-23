@@ -6,11 +6,12 @@ Image::Image() {
 
 }
 
-Image::Image(ofImage img, float imageWidth, float imageHeight, vec3 dropLocation) {
+Image::Image(ofImage img, float imageWidth, float imageHeight, vec3 dropLocation, int position) {
 	this->img = img;
 	this->imageWidth = imageWidth;
 	this->imageHeight = imageHeight;
 	this->imagePosition = dropLocation;
+	this->position = position;
 	calculateImageCenter();
 }
 
@@ -36,40 +37,106 @@ vec3 Image::getImageCenter() {
 	return imageCenter;
 }
 
+void Image::setImagePosition(vec3 pos) {
+	this->imagePosition = pos;
+}
+
+int Image::getPosition() {
+	return position;
+}
+
+void Image::setPosition(int position) {
+	this->position = position;
+}
+
 void Image::draw() {
 	img.draw(imagePosition);
+}
+
+void ofApp::swap(Image &a, Image &b) {
+	Image temp = a;
+	a = b;
+	b = temp;
+}
+
+void ofApp::moveSelectedImageUp() {
+	// if image is top of stack, do nothing
+	if (selectedImg->position + 1 == images.size()) return;
+
+	// swap places with next Image
+	int curImgPos = selectedImg->position;
+	int nextImgPos = curImgPos + 1;
+	
+	// swap stored index value for each Image
+	images[curImgPos].position = nextImgPos;
+	images[nextImgPos].position = curImgPos;
+
+	// swap places
+	swap(images[curImgPos], images[nextImgPos]);
+
+	// keep selectedImg pointer on original Image
+	selectedImg = &images[nextImgPos];
+}
+
+void ofApp::moveSelectedImageDown() {
+
+	// if image is bottom of stack, do nothing
+	if (selectedImg->position == 0) return;
+
+	// swap places with previous Image
+	int curImgPos = selectedImg->position;
+	int prevImgPos = curImgPos - 1;
+
+	// swap stored index value for each Image
+	images[curImgPos].position = prevImgPos;
+	images[prevImgPos].position = curImgPos;
+
+	// swap places
+	swap(images[curImgPos], images[prevImgPos]);
+
+	// keep selectedImg pointer on original Image
+	selectedImg = &images[prevImgPos];
+}
+
+void ofApp::deleteSelectedImage() {
+	int pos = selectedImg->position;
+	images.erase(images.begin() + pos);
+	bImageSelected = false;
+	selectedImg = nullptr;
+	count--;
+
+	// decrements indices of Image after deleted Image by 1
+	for (int i = pos; i < images.size(); i++) {
+		images[i].position--;
+	}
 }
 
 void ofApp::drawSelectionRect() {
 	ofSetLineWidth(2);
 	ofSetColor(255, 255, 127);
 	ofNoFill();
-
-	float xPos = selectedImg.getImagePosition().x;
-	float yPos = selectedImg.getImagePosition().y;
-	float rectWidth = selectedImg.getImageWidth();
-	float rectHeight = selectedImg.getImageHeight();
+	float xPos = selectedImg->getImagePosition().x;
+	float yPos = selectedImg->getImagePosition().y;
+	float rectWidth = selectedImg->getImageWidth();
+	float rectHeight = selectedImg->getImageHeight();
 	ofDrawRectangle(xPos, yPos, rectWidth, rectHeight);
-	ofSetColor(255, 255, 255);
-}
-
-void ofApp::setSelectedImg(Image &img) {
-	this->selectedImg = img;
+	ofSetColor(255, 255, 255);	// to prevent images from being colored
 }
 
 // Finds the first image that is inside the point
 bool ofApp::isInsideImage(vec3 point) {
-	for (vector<Image>::reverse_iterator itr = images.rbegin(); itr != images.rend(); itr++) {
-		Image curImage = *itr;
+	for (int i = images.size()-1; i >= 0; i--) {
+		Image curImage = images[i];
 		float x1 = curImage.getImagePosition().x;
 		float y1 = curImage.getImagePosition().y;
 		float x2 = x1 + curImage.getImageWidth();
 		float y2 = y1 + curImage.getImageHeight();
 		if (point.x >= x1 && point.x <= x2 && point.y >= y1 && point.y <= y2) {
-			setSelectedImg(curImage);
+			selectedImg = &images[i];
 			return true;
 		}
 	}
+	return false;
 }
 
 //--------------------------------------------------------------
@@ -96,10 +163,10 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-	if (bImageSelected) {
-		if (key == OF_KEY_UP) {
-
-		}
+	if (bImageSelected && selectedImg != nullptr) {
+		if (key == OF_KEY_UP) moveSelectedImageUp();
+		else if (key == OF_KEY_DOWN) moveSelectedImageDown();
+		else if (key == 'd') deleteSelectedImage();
 	}
 }
 
@@ -115,24 +182,31 @@ void ofApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-
+	if (!bImageSelected) return;
+	vec3 newMousePos(x, y, 0);
+	vec3 delta = newMousePos - lastMouse;
+	vec3 curImgPos = selectedImg->getImagePosition();
+	vec3 newPos = curImgPos + delta;
+	selectedImg->setImagePosition(newPos);
+	lastMouse = newMousePos;
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button) {
-	if (isInsideImage(vec3(x, y, 0))) {
+	if (bImageLoaded && isInsideImage(vec3(x, y, 0))) {
 		bImageSelected = true;
-		cout << "click\n";
+		lastMouse = vec3(x, y, 0);
+		cout << "img pos: " << selectedImg->position << endl;
 	}
 	else {
-
 		bImageSelected = false;
+		selectedImg = nullptr;
 	}
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-
+	bDrag = false;
 }
 
 //--------------------------------------------------------------
@@ -162,9 +236,8 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 		float imageWidth = image.getWidth();
 		float imageHeight = image.getHeight();
 		vec3 dropLocation = vec3(dragInfo.position, 0);
-		Image newImage(image, imageWidth, imageHeight, dropLocation);
+		Image newImage(image, imageWidth, imageHeight, dropLocation, count++);
 		images.push_back(newImage);
-		cout << "f\n";
 	}
 }
 
