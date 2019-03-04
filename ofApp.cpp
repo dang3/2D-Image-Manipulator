@@ -2,57 +2,6 @@
 
 using namespace glm;
 
-Image::Image() {
-
-}
-
-Image::Image(ofImage img, float imageWidth, float imageHeight, vec3 dropLocation, int position) {
-	this->img = img;
-	this->imageWidth = imageWidth;
-	this->imageHeight = imageHeight;
-	this->imagePosition = dropLocation;
-	this->position = position;
-	calculateImageCenter();
-}
-
-void Image::calculateImageCenter() {
-	float x = imagePosition.x - (imageWidth / 2);
-	float y = imagePosition.y - (imageHeight / 2);
-	imageCenter = vec3(x, y, 0);
-}
-
-float Image::getImageWidth() {
-	return imageWidth;
-}
-
-float Image::getImageHeight() {
-	return imageHeight;
-}
-
-vec3 Image::getImagePosition() {
-	return imagePosition;
-}
-
-vec3 Image::getImageCenter() {
-	return imageCenter;
-}
-
-void Image::setImagePosition(vec3 pos) {
-	this->imagePosition = pos;
-}
-
-int Image::getPosition() {
-	return position;
-}
-
-void Image::setPosition(int position) {
-	this->position = position;
-}
-
-void Image::draw() {
-	img.draw(imagePosition);
-}
-
 void ofApp::swap(Image &a, Image &b) {
 	Image temp = a;
 	a = b;
@@ -128,6 +77,7 @@ bool ofApp::isInsideImage(vec3 point) {
 		float y2 = y1 + curImage.getImageHeight();
 		if (point.x >= x1 && point.x <= x2 && point.y >= y1 && point.y <= y2) {
 			selectedImg = &images[i];
+			frame.setImage(selectedImg);
 			return true;
 		}
 	}
@@ -150,6 +100,7 @@ void ofApp::draw(){
 		for (vector<Image>::iterator itr = images.begin(); itr != images.end(); itr++) {
 			itr->draw();
 		}
+		frame.draw();
 	}
 	if (bImageSelected) {
 		drawSelectionRect();
@@ -166,7 +117,6 @@ void ofApp::keyPressed(int key){
 	if (bImageLoaded && key == 's') {
 		image.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
 		image.save("screenShot.png");
-		cout << "saved\n";
 	}
 }
 
@@ -189,6 +139,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 	vec3 newPos = curImgPos + delta;
 	selectedImg->setImagePosition(newPos);
 	lastMouse = newMousePos;
+	frame.setHandlePositions();
 }
 
 //--------------------------------------------------------------
