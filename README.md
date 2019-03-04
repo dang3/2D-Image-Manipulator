@@ -1,1 +1,1 @@
-# CS235-Project1
+# 2D Image Manipulator
