@@ -59,43 +59,38 @@ void ofApp::swap(Image &a, Image &b) {
 	b = temp;
 }
 
+void ofApp::swapImages(int curImagPos, int newImgPos) {
+	// swap stored index value for each Image
+	images[curImagPos].position = newImgPos;
+	images[newImgPos].position = curImagPos;
+
+	// swap places
+	swap(images[curImagPos], images[newImgPos]);
+	
+	// keep selectedImg pointer on original Image
+	selectedImg = &images[newImgPos];
+}
+
 void ofApp::moveSelectedImageUp() {
 	// if image is top of stack, do nothing
 	if (selectedImg->position + 1 == images.size()) return;
 
-	// swap places with next Image
+	// get position of images to be swapped
 	int curImgPos = selectedImg->position;
 	int nextImgPos = curImgPos + 1;
 	
-	// swap stored index value for each Image
-	images[curImgPos].position = nextImgPos;
-	images[nextImgPos].position = curImgPos;
-
-	// swap places
-	swap(images[curImgPos], images[nextImgPos]);
-
-	// keep selectedImg pointer on original Image
-	selectedImg = &images[nextImgPos];
+	swapImages(curImgPos, nextImgPos);
 }
 
 void ofApp::moveSelectedImageDown() {
-
 	// if image is bottom of stack, do nothing
 	if (selectedImg->position == 0) return;
 
-	// swap places with previous Image
+	// get position of images to be swapped
 	int curImgPos = selectedImg->position;
 	int prevImgPos = curImgPos - 1;
 
-	// swap stored index value for each Image
-	images[curImgPos].position = prevImgPos;
-	images[prevImgPos].position = curImgPos;
-
-	// swap places
-	swap(images[curImgPos], images[prevImgPos]);
-
-	// keep selectedImg pointer on original Image
-	selectedImg = &images[prevImgPos];
+	swapImages(curImgPos, prevImgPos);
 }
 
 void ofApp::deleteSelectedImage() {
@@ -168,6 +163,11 @@ void ofApp::keyPressed(int key){
 		else if (key == OF_KEY_DOWN) moveSelectedImageDown();
 		else if (key == 'd') deleteSelectedImage();
 	}
+	if (bImageLoaded && key == 's') {
+		image.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
+		image.save("screenShot.png");
+		cout << "saved\n";
+	}
 }
 
 //--------------------------------------------------------------
@@ -196,7 +196,6 @@ void ofApp::mousePressed(int x, int y, int button) {
 	if (bImageLoaded && isInsideImage(vec3(x, y, 0))) {
 		bImageSelected = true;
 		lastMouse = vec3(x, y, 0);
-		cout << "img pos: " << selectedImg->position << endl;
 	}
 	else {
 		bImageSelected = false;

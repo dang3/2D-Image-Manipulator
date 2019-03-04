@@ -66,4 +66,5 @@ class ofApp : public ofBaseApp{
 		int count = 0; // used to identify where image is placed in vector
 		bool bDrag = false;
 		glm::vec3 lastMouse;
+		void swapImages(int, int);
 };
