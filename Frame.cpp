@@ -20,8 +20,13 @@ bool Frame::isInsideHandles(vec3 point) {
 			return true;
 		}
 	}
-	
 	return false;
+}
+
+void Frame::test() {
+	for (int i = 0; i < scaleHandles.size(); i++) {
+		scaleHandles[i].setFrame(this);
+	}
 }
 
 void Frame::setHandlePositions() {
@@ -54,6 +59,10 @@ void Frame::scaleFrame(vec3 point) {
 	width = point.x - xPos;
 	height = point.y - yPos;
 	updateImage();
+}
+
+void Frame::processInput(vec3 point) {
+	selectedHandle->mouseDrag(point);
 }
 
 void Frame::updateFrameDimensions(float newWidth, float newHeight) {

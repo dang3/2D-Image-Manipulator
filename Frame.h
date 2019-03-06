@@ -37,4 +37,9 @@ public:
 	void scaleFrame(glm::vec3);
 	void updateImage();
 	void updateFrameDimensions(float, float);
+	void processInput(glm::vec3);
+
+
+
+	void test();
 };

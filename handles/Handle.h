@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Handle.h"
 #include "ofMain.h"
+
+class Frame; 
 
 class Handle {
 	protected:
@@ -21,7 +22,7 @@ class Handle {
 		void setYPos(float);
 		bool isInsideHandle(glm::vec3);
 
-	//	virtual void mouseDrag(glm::vec3) = 0;
+		virtual void mouseDrag(glm::vec3) = 0;
 };
 
 enum class HandleType {

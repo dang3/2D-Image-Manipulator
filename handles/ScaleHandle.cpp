@@ -1,4 +1,5 @@
 #include "ScaleHandle.h"
+#include "../Frame.h"
 
 using namespace glm;
 
@@ -7,10 +8,13 @@ ScaleHandle::ScaleHandle() {
 	height = 10;
 }
 
-//ScaleHandle::ScaleHandle(Frame* frame) : ScaleHandle() {}
-//
-//void ScaleHandle::mouseDrag(vec3 point) {
-//	float width = point.x - frame->getXPos();
-//	float height = point.y - frame->getYPos();
-//}
+void ScaleHandle::setFrame(Frame *f) {
+	frame = f;
+}
+
+void ScaleHandle::mouseDrag(vec3 point) {
+	float width = point.x - frame->getXPos();
+	float height = point.y - frame->getYPos();
+	frame->updateFrameDimensions(width, height);
+}
 

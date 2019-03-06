@@ -134,7 +134,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 	vec3 newPos = curImgPos + delta;
 
 	if (bScale) {			// if scaling the image
-		frame.scaleFrame(newMousePos);
+		frame.processInput(newMousePos);
 	}
 	else if (bTranslate) { 	// if translating the image
 		selectedImg->setImagePosition(newPos);
@@ -190,7 +190,7 @@ void ofApp::gotMessage(ofMessage msg){
 }
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
+void ofApp::dragEvent(ofDragInfo dragInfo){
 	if (image.load(dragInfo.files[0])) {
 		bImageLoaded = true;
 		float imageWidth = image.getWidth();
@@ -198,6 +198,7 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 		vec3 dropLocation = vec3(dragInfo.position, 0);
 		Image newImage(image, imageWidth, imageHeight, dropLocation, count++);
 		images.push_back(newImage);
+		frame.test();
 	}
 }
 
