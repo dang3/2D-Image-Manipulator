@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Handle.h"
+#include "ofMain.h"
 
 class Handle {
 	protected:
@@ -8,7 +9,6 @@ class Handle {
 		float yPos;
 		float width;
 		float height;
-
 
 	public:
 		Handle();
@@ -19,6 +19,7 @@ class Handle {
 		float getHeight();
 		void setXPos(float);
 		void setYPos(float);
+		bool isInsideHandle(glm::vec3);
 
-
+		
 };

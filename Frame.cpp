@@ -1,6 +1,7 @@
 #include "Frame.h"
 
 using namespace std;
+using namespace glm;
 
 Frame::Frame() {
 	for (int i = 0; i < numScaleHandles; i++) {
@@ -11,8 +12,16 @@ Frame::Frame() {
 	scaleHandleHeight = scaleHandles[0].getHeight();
 }
 
-bool Frame::isInsideScaleHandles() {
-
+bool Frame::isInsideHandles(vec3 point) {
+	// loop through every handle
+	for (int i = 0; i < scaleHandles.size(); i++) {
+		if (scaleHandles[i].isInsideHandle(point)) {
+			selectedHandle = &scaleHandles[i];
+			return true;
+		}
+	}
+	
+	return false;
 }
 
 void Frame::setHandlePositions() {
@@ -39,6 +48,22 @@ void Frame::setHandlePositions() {
 void Frame::setImage(Image *img) {
 	this->curImage = img;
 	setHandlePositions();
+}
+
+void Frame::scaleFrame(vec3 point) {
+	width = point.x - xPos;
+	height = point.y - yPos;
+}
+
+void Frame::drawBorder() {
+	ofSetLineWidth(2);
+	ofSetColor(255, 255, 127);
+	float xPos = curImage->getImagePosition().x;
+	float yPos = curImage->getImagePosition().y;
+	float borderWidth = curImage->getImageWidth();
+	float borderHeight = curImage->getImageHeight();
+	ofDrawRectangle(xPos, yPos, borderWidth, borderHeight);
+	ofSetColor(255, 255, 255);
 }
 
 void Frame::draw() {

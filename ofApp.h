@@ -5,10 +5,10 @@
 #include "Frame.h"
 
 class ofApp : public ofBaseApp{
-
 	private:
 		Frame frame;
-
+		bool bScale = false;
+		bool bTranslate = false;
 
 	public:
 		void setup();
@@ -43,7 +43,6 @@ class ofApp : public ofBaseApp{
 		void moveSelectedImageDown();
 
 		int count = 0; // used to identify where image is placed in vector
-		bool bDrag = false;
 		glm::vec3 lastMouse;
 		void swapImages(int, int);
 };

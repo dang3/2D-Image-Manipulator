@@ -6,7 +6,7 @@
 
 class Frame {
 private:
-	Image *curImage;
+	Image* curImage;
 	int numScaleHandles = 4;
 	float scaleHandleWidth;
 	float scaleHandleHeight;
@@ -15,6 +15,8 @@ private:
 	float width;
 	float height;
 	vector<ScaleHandle> scaleHandles;
+	Handle* selectedHandle;
+	void drawBorder();
 	
 
 public:
@@ -26,6 +28,7 @@ public:
 	void setHeight(float);
 	void setImage(Image*);
 	void setHandlePositions();
-	bool isInsideScaleHandles();
+	bool isInsideHandles(glm::vec3);
+	void scaleFrame(glm::vec3);
 
 };

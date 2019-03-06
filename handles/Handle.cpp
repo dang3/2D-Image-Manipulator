@@ -2,6 +2,7 @@
 #include "ofGraphics.h"
 
 using namespace std;
+using namespace glm;
 
 Handle::Handle() {
 
@@ -21,6 +22,17 @@ float Handle::getHeight() {
 
 float Handle::getWidth() {
 	return width;
+}
+
+bool Handle::isInsideHandle(vec3 point) {
+	float xPos2 = xPos + width;
+	float yPos2 = yPos + height;
+
+	if (point.x >= xPos && point.x <= xPos2 && point.y >= yPos && point.y <= yPos2) {
+		return true;
+	}
+	else
+		return false;
 }
 
 void Handle::setXPos(float xPos) {

@@ -49,9 +49,12 @@ void ofApp::deleteSelectedImage() {
 	selectedImg = nullptr;
 	count--;
 
-	// decrements indices of Image after deleted Image by 1
-	for (int i = pos; i < images.size(); i++) {
-		images[i].position--;
+	if (images.size() == 0) bImageLoaded = false;
+	else {
+		// decrements indices of Image after deleted Image by 1
+		for (int i = pos; i < images.size(); i++) {
+			images[i].position--;
+		}
 	}
 }
 
@@ -133,20 +136,36 @@ void ofApp::mouseMoved(int x, int y ){
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
 	if (!bImageSelected) return;
+
+	// Find location of new mouse & calculate the delta
 	vec3 newMousePos(x, y, 0);
 	vec3 delta = newMousePos - lastMouse;
 	vec3 curImgPos = selectedImg->getImagePosition();
 	vec3 newPos = curImgPos + delta;
-	selectedImg->setImagePosition(newPos);
-	lastMouse = newMousePos;
-	frame.setHandlePositions();
+
+	if (bScale) {			// if scaling the image
+		selectedImg->scaleImage(newMousePos);
+	}
+	else if (bTranslate) { 	// if translating the image
+		selectedImg->setImagePosition(newPos);
+		lastMouse = newMousePos;
+		frame.setHandlePositions();
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button) {
-	if (bImageLoaded && isInsideImage(vec3(x, y, 0))) {
-		bImageSelected = true;
-		lastMouse = vec3(x, y, 0);
+	if (bImageLoaded) {
+		vec3 point(x, y, 0);
+
+		if (frame.isInsideHandles(point)) {
+			bScale = true;
+		}
+		else if (isInsideImage(point)) {
+			bImageSelected = true;
+			lastMouse = vec3(x, y, 0);
+			bTranslate = true;
+		}
 	}
 	else {
 		bImageSelected = false;
@@ -156,7 +175,9 @@ void ofApp::mousePressed(int x, int y, int button) {
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-	bDrag = false;
+	bScale = false;
+	bTranslate = false;
+
 }
 
 //--------------------------------------------------------------

@@ -20,6 +20,7 @@ public:
 	void setImagePosition(glm::vec3);
 	int getPosition();
 	void draw();
+	void scaleImage(glm::vec3);
 
 	int position;
 
