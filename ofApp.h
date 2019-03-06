@@ -37,7 +37,6 @@ class ofApp : public ofBaseApp{
 		void deleteSelectedImage();
 
 	private:
-		void drawSelectionRect();
 		bool isInsideImage(glm::vec3 point);
 		void moveSelectedImageUp();
 		void moveSelectedImageDown();

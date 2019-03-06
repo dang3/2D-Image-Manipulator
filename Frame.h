@@ -17,6 +17,7 @@ private:
 	vector<ScaleHandle> scaleHandles;
 	Handle* selectedHandle;
 	void drawBorder();
+	void drawHandles();
 	
 
 public:
@@ -29,6 +30,11 @@ public:
 	void setImage(Image*);
 	void setHandlePositions();
 	bool isInsideHandles(glm::vec3);
+	float getXPos();
+	float getYPos();
+	float getWidth();
+	float getHeight();
 	void scaleFrame(glm::vec3);
-
+	void updateImage();
+	void updateFrameDimensions(float, float);
 };

@@ -21,6 +21,8 @@ public:
 	int getPosition();
 	void draw();
 	void scaleImage(glm::vec3);
+	void setWidth(float);
+	void setHeight(float);
 
 	int position;
 

@@ -24,6 +24,14 @@ float Image::getImageWidth() {
 	return imageWidth;
 }
 
+void Image::setHeight(float height) {
+	imageHeight = height;
+}
+
+void Image::setWidth(float width) {
+	imageWidth = width;
+}
+
 float Image::getImageHeight() {
 	return imageHeight;
 }

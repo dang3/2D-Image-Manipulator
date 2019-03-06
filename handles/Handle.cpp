@@ -4,9 +4,7 @@
 using namespace std;
 using namespace glm;
 
-Handle::Handle() {
-
-}
+Handle::Handle() {}
 
 float Handle::getXPos() {
 	return xPos;

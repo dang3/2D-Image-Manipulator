@@ -58,17 +58,7 @@ void ofApp::deleteSelectedImage() {
 	}
 }
 
-void ofApp::drawSelectionRect() {
-	ofSetLineWidth(2);
-	ofSetColor(255, 255, 127);
-	ofNoFill();
-	float xPos = selectedImg->getImagePosition().x;
-	float yPos = selectedImg->getImagePosition().y;
-	float rectWidth = selectedImg->getImageWidth();
-	float rectHeight = selectedImg->getImageHeight();
-	ofDrawRectangle(xPos, yPos, rectWidth, rectHeight);
-	ofSetColor(255, 255, 255);	// to prevent images from being colored
-}
+
 
 // Finds the first image that is inside the point
 bool ofApp::isInsideImage(vec3 point) {
@@ -103,10 +93,10 @@ void ofApp::draw(){
 		for (vector<Image>::iterator itr = images.begin(); itr != images.end(); itr++) {
 			itr->draw();
 		}
-		frame.draw();
+
 	}
 	if (bImageSelected) {
-		drawSelectionRect();
+		frame.draw();
 	}
 }
 
@@ -144,7 +134,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 	vec3 newPos = curImgPos + delta;
 
 	if (bScale) {			// if scaling the image
-		selectedImg->scaleImage(newMousePos);
+		frame.scaleFrame(newMousePos);
 	}
 	else if (bTranslate) { 	// if translating the image
 		selectedImg->setImagePosition(newPos);
@@ -157,7 +147,6 @@ void ofApp::mouseDragged(int x, int y, int button){
 void ofApp::mousePressed(int x, int y, int button) {
 	if (bImageLoaded) {
 		vec3 point(x, y, 0);
-
 		if (frame.isInsideHandles(point)) {
 			bScale = true;
 		}
@@ -166,10 +155,10 @@ void ofApp::mousePressed(int x, int y, int button) {
 			lastMouse = vec3(x, y, 0);
 			bTranslate = true;
 		}
-	}
-	else {
-		bImageSelected = false;
-		selectedImg = nullptr;
+		else {
+			bImageSelected = false;
+			selectedImg = nullptr;
+		}
 	}
 }
 

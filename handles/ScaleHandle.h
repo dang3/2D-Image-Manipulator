@@ -2,8 +2,10 @@
 
 #include "Handle.h"
 
+
 class ScaleHandle : public Handle {
 	public:
 		ScaleHandle();
+		//void mouseDrag(glm::vec3);
 
 };
