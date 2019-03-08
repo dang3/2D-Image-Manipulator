@@ -6,7 +6,7 @@
 
 class Frame {
 private:
-	Image* curImage;
+
 	int numScaleHandles = 4;
 	float scaleHandleWidth;
 	float scaleHandleHeight;
@@ -23,6 +23,7 @@ private:
 public:
 	Frame();
 	~Frame();
+	Image* curImage;
 	void draw();
 	void setXPos(float);
 	void setYPos(float);

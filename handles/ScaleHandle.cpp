@@ -20,20 +20,23 @@ void ScaleHandle_BOT_RIGHT::mouseDrag(vec3 point) {
 }
 
 void ScaleHandle_BOT_LEFT::mouseDrag(vec3 point) {
-	cout << "in1\n\n";
-	cout << point.x << endl;
-	cout << "end\n";
-	/*float width = point.x - frame->getXPos();
-	float height = (point.y - frame->getYPos()) + frame->getHeight();
-	frame->setYPos(point.y);
-	frame->updateFrameDimensions(width, height);*/
-
-
+	float width = frame->getWidth() + (frame->getXPos() - point.x);
+	float height = point.y - frame->getYPos();
+	frame->setXPos(point.x);
+	frame->updateFrameDimensions(width, height);
 }
 
 void ScaleHandle_TOP_LEFT::mouseDrag(vec3 point) {
-	cout << "in2\n\n";
+	float width = frame->getWidth() + (frame->getXPos()- point.x);
+	float height = frame->getHeight() + (frame->getYPos() - point.y);
+	frame->setXPos(point.x);
+	frame->setYPos(point.y);
+	frame->updateFrameDimensions(width, height);
 }
+
 void ScaleHandle_TOP_RIGHT::mouseDrag(vec3 point) {
-	cout << "in3\n\n";
+	float width = point.x - frame->getXPos();
+	float height = frame->getHeight() + (frame->getYPos()- point.y);
+	frame->setYPos(point.y);
+	frame->updateFrameDimensions(width, height);
 }

@@ -81,6 +81,7 @@ void Frame::updateFrameDimensions(float newWidth, float newHeight) {
 void Frame::updateImage() {
 	curImage->setWidth(width);
 	curImage->setHeight(height);
+	curImage->setImagePosition(vec3(xPos, yPos, 0));
 	setHandlePositions();
 }
 
