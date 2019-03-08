@@ -58,8 +58,6 @@ void ofApp::deleteSelectedImage() {
 	}
 }
 
-
-
 // Finds the first image that is inside the point
 bool ofApp::isInsideImage(vec3 point) {
 	for (int i = images.size()-1; i >= 0; i--) {

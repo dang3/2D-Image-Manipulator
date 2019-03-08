@@ -14,7 +14,7 @@ private:
 	float yPos;
 	float width;
 	float height;
-	vector<ScaleHandle> scaleHandles;
+	vector<Handle*> handles;
 	Handle* selectedHandle;
 	void drawBorder();
 	void drawHandles();
@@ -22,6 +22,7 @@ private:
 
 public:
 	Frame();
+	~Frame();
 	void draw();
 	void setXPos(float);
 	void setYPos(float);

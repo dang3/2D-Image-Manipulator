@@ -5,9 +5,29 @@
 class ScaleHandle : public Handle {
 	public:
 		ScaleHandle();
-		void mouseDrag(glm::vec3);
-		Frame* frame;
+};
 
-		void setFrame(Frame *f);
 
+class ScaleHandle_BOT_RIGHT : public ScaleHandle {
+public:
+	ScaleHandle_BOT_RIGHT();
+	void mouseDrag(glm::vec3);
+};
+
+class ScaleHandle_BOT_LEFT : public ScaleHandle {
+public:
+	ScaleHandle_BOT_LEFT();
+	void mouseDrag(glm::vec3);
+};
+
+class ScaleHandle_TOP_RIGHT : public ScaleHandle {
+public:
+	ScaleHandle_TOP_RIGHT();
+	void mouseDrag(glm::vec3);
+};
+
+class ScaleHandle_TOP_LEFT : public ScaleHandle {
+public:
+	ScaleHandle_TOP_LEFT();
+	void mouseDrag(glm::vec3);
 };

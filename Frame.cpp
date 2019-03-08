@@ -4,19 +4,26 @@ using namespace std;
 using namespace glm;
 
 Frame::Frame() {
-	for (int i = 0; i < numScaleHandles; i++) {
-		ScaleHandle handle;
-		scaleHandles.push_back(handle);
-	}
-	scaleHandleWidth = scaleHandles[0].getWidth();
-	scaleHandleHeight = scaleHandles[0].getHeight();
+	ScaleHandle *handle1 = new ScaleHandle_TOP_LEFT();
+	ScaleHandle *handle2 = new ScaleHandle_TOP_RIGHT();
+	ScaleHandle *handle3 = new ScaleHandle_BOT_LEFT();
+	ScaleHandle *handle4 = new ScaleHandle_BOT_RIGHT();
+
+	handles.push_back(handle1);
+	handles.push_back(handle2);
+	handles.push_back(handle3);
+	handles.push_back(handle4);
+
+	scaleHandleWidth = handle1->getWidth();
+	scaleHandleHeight = handle1->getHeight();
 }
 
 bool Frame::isInsideHandles(vec3 point) {
 	// loop through every handle
-	for (int i = 0; i < scaleHandles.size(); i++) {
-		if (scaleHandles[i].isInsideHandle(point)) {
-			selectedHandle = &scaleHandles[i];
+	for (int i = 0; i < handles.size(); i++) {
+		if (handles[i]->isInsideHandle(point)) {
+			selectedHandle = handles[i];
+			cout << i << endl;
 			return true;
 		}
 	}
@@ -24,8 +31,8 @@ bool Frame::isInsideHandles(vec3 point) {
 }
 
 void Frame::test() {
-	for (int i = 0; i < scaleHandles.size(); i++) {
-		scaleHandles[i].setFrame(this);
+	for (int i = 0; i < handles.size(); i++) {
+		handles[i]->setFrame(this);
 	}
 }
 
@@ -37,17 +44,17 @@ void Frame::setHandlePositions() {
 	height = curImage->getImageHeight();
 
 	// set frame x & y positions
-	scaleHandles[0].setXPos(xPos - scaleHandleWidth / 2);
-	scaleHandles[0].setYPos(yPos - scaleHandleHeight / 2);
+	handles[0]->setXPos(xPos - scaleHandleWidth / 2);
+	handles[0]->setYPos(yPos - scaleHandleHeight / 2);
 
-	scaleHandles[1].setXPos(xPos+width - scaleHandleWidth / 2);
-	scaleHandles[1].setYPos(yPos - scaleHandleHeight / 2);
+	handles[1]->setXPos(xPos+width - scaleHandleWidth / 2);
+	handles[1]->setYPos(yPos - scaleHandleHeight / 2);
 
-	scaleHandles[2].setXPos(xPos - scaleHandleWidth / 2);
-	scaleHandles[2].setYPos(yPos+height - scaleHandleHeight / 2);
+	handles[2]->setXPos(xPos - scaleHandleWidth / 2);
+	handles[2]->setYPos(yPos+height - scaleHandleHeight / 2);
 
-	scaleHandles[3].setXPos(xPos+width - scaleHandleWidth / 2);
-	scaleHandles[3].setYPos(yPos+height - scaleHandleHeight / 2);
+	handles[3]->setXPos(xPos+width - scaleHandleWidth / 2);
+	handles[3]->setYPos(yPos+height - scaleHandleHeight / 2);
 }
 
 void Frame::setImage(Image *img) {
@@ -108,7 +115,7 @@ void Frame::drawBorder() {
 void Frame::drawHandles() {
 	ofSetColor(255, 0, 0);
 	for (int i = 0; i < numScaleHandles; i++) {
-		scaleHandles[i].draw();
+		handles[i]->draw();
 	}
 	ofSetColor(255, 255, 255);
 }
@@ -132,6 +139,12 @@ void Frame::setWidth(float width) {
 
 void Frame::setHeight(float height) {
 	this->height = height;
+}
+
+Frame::~Frame() {
+	for (int i = 0; i < handles.size(); i++) {
+		delete handles[i];
+	}
 }
 
 

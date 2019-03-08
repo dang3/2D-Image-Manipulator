@@ -1,5 +1,6 @@
 #include "Handle.h"
 #include "ofGraphics.h"
+#include "../Frame.h"
 
 using namespace std;
 using namespace glm;
@@ -43,4 +44,8 @@ void Handle::setYPos(float yPos) {
 
 void Handle::draw() {
 	ofDrawRectangle(xPos, yPos, width, height);
+}
+
+void Handle::setFrame(Frame *f) {
+	frame = f;
 }
