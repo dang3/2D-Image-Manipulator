@@ -11,23 +11,23 @@ class ScaleHandle : public Handle {
 class ScaleHandle_BOT_RIGHT : public ScaleHandle {
 public:
 	ScaleHandle_BOT_RIGHT();
-	void mouseDrag(glm::vec3);
+	void mouseDrag(glm::vec3*, glm::vec3* v = NULL);
 };
 
 class ScaleHandle_BOT_LEFT : public ScaleHandle {
 public:
 	ScaleHandle_BOT_LEFT();
-	void mouseDrag(glm::vec3);
+	void mouseDrag(glm::vec3*, glm::vec3* v = NULL);
 };
 
 class ScaleHandle_TOP_RIGHT : public ScaleHandle {
 public:
 	ScaleHandle_TOP_RIGHT();
-	void mouseDrag(glm::vec3);
+	void mouseDrag(glm::vec3*, glm::vec3* v = NULL);
 };
 
 class ScaleHandle_TOP_LEFT : public ScaleHandle {
 public:
 	ScaleHandle_TOP_LEFT();
-	void mouseDrag(glm::vec3);
+	void mouseDrag(glm::vec3*, glm::vec3* v = NULL);
 };

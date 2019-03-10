@@ -9,6 +9,7 @@ class ofApp : public ofBaseApp{
 		Frame frame;
 		bool bScale = false;
 		bool bTranslate = false;
+		glm::vec3 mousePressedLocation;
 
 	public:
 		void setup();
@@ -38,8 +39,8 @@ class ofApp : public ofBaseApp{
 
 	private:
 		bool isInsideImage(glm::vec3 point);
-		void moveSelectedImageUp();
-		void moveSelectedImageDown();
+		void moveImageUpStack();
+		void moveImageDownStack();
 
 		int count = 0; // used to identify where image is placed in vector
 		glm::vec3 lastMouse;

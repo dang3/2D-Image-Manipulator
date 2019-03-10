@@ -1,13 +1,13 @@
 #pragma once
 
 #include "Image.h"
-#include "handles/ScaleHandle.h"
 #include "ofGraphics.h"
+#include "handles/Handle.h"
+#include "Utils.h"
 
 class Frame {
 private:
-
-	int numScaleHandles = 4;
+	int rotateHandleHeight = 40;
 	float scaleHandleWidth;
 	float scaleHandleHeight;
 	float xPos;
@@ -39,7 +39,8 @@ public:
 	void scaleFrame(glm::vec3);
 	void updateImage();
 	void updateFrameDimensions(float, float);
-	void processInput(glm::vec3);
+	void processInput(glm::vec3*, glm::vec3* v = NULL);
+	void moveFrameFromKey(DirectionKey);
 
 
 

@@ -1,4 +1,6 @@
 #include "Frame.h"
+#include "handles/ScaleHandle.h"
+#include "handles/RotateHandle.h"
 
 using namespace std;
 using namespace glm;
@@ -8,11 +10,14 @@ Frame::Frame() {
 	ScaleHandle *handle2 = new ScaleHandle_TOP_RIGHT();
 	ScaleHandle *handle3 = new ScaleHandle_BOT_LEFT();
 	ScaleHandle *handle4 = new ScaleHandle_BOT_RIGHT();
+	RotateHandle *handle5 = new RotateHandle();
+	
 
 	handles.push_back(handle1);
 	handles.push_back(handle2);
 	handles.push_back(handle3);
 	handles.push_back(handle4);
+	handles.push_back(handle5);
 
 	scaleHandleWidth = handle1->getWidth();
 	scaleHandleHeight = handle1->getHeight();
@@ -23,7 +28,6 @@ bool Frame::isInsideHandles(vec3 point) {
 	for (int i = 0; i < handles.size(); i++) {
 		if (handles[i]->isInsideHandle(point)) {
 			selectedHandle = handles[i];
-			cout << i << endl;
 			return true;
 		}
 	}
@@ -55,6 +59,9 @@ void Frame::setHandlePositions() {
 
 	handles[3]->setXPos(xPos+width - scaleHandleWidth / 2);
 	handles[3]->setYPos(yPos+height - scaleHandleHeight / 2);
+
+	handles[4]->setXPos(xPos + width / 2);
+	handles[4]->setYPos(yPos-rotateHandleHeight);
 }
 
 void Frame::setImage(Image *img) {
@@ -68,8 +75,16 @@ void Frame::scaleFrame(vec3 point) {
 	updateImage();
 }
 
-void Frame::processInput(vec3 point) {
-	selectedHandle->mouseDrag(point);
+void Frame::moveFrameFromKey(DirectionKey dir) {
+	if (dir == DirectionKey::UP) yPos--;
+	else if (dir == DirectionKey::DOWN) yPos++;
+	else if (dir == DirectionKey::LEFT) xPos--;
+	else if (dir == DirectionKey::RIGHT) xPos++;
+	updateImage();
+}
+
+void Frame::processInput(vec3* point1, vec3* point2) {
+	selectedHandle->mouseDrag(point1, point2);
 }
 
 void Frame::updateFrameDimensions(float newWidth, float newHeight) {
@@ -115,7 +130,7 @@ void Frame::drawBorder() {
 
 void Frame::drawHandles() {
 	ofSetColor(255, 0, 0);
-	for (int i = 0; i < numScaleHandles; i++) {
+	for (int i = 0; i < handles.size(); i++) {
 		handles[i]->draw();
 	}
 	ofSetColor(255, 255, 255);

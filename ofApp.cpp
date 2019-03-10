@@ -20,7 +20,7 @@ void ofApp::swapImages(int curImagPos, int newImgPos) {
 	selectedImg = &images[newImgPos];
 }
 
-void ofApp::moveSelectedImageUp() {
+void ofApp::moveImageUpStack() {
 	// if image is top of stack, do nothing
 	if (selectedImg->position + 1 == images.size()) return;
 
@@ -31,7 +31,8 @@ void ofApp::moveSelectedImageUp() {
 	swapImages(curImgPos, nextImgPos);
 }
 
-void ofApp::moveSelectedImageDown() {
+
+void ofApp::moveImageDownStack() {
 	// if image is bottom of stack, do nothing
 	if (selectedImg->position == 0) return;
 
@@ -101,9 +102,13 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 	if (bImageSelected && selectedImg != nullptr) {
-		if (key == OF_KEY_UP) moveSelectedImageUp();
-		else if (key == OF_KEY_DOWN) moveSelectedImageDown();
-		else if (key == 'd') deleteSelectedImage();
+		if (key == OF_KEY_UP) moveImageUpStack();
+		else if (key == OF_KEY_DOWN) moveImageDownStack();
+		else if (key == OF_KEY_DEL) deleteSelectedImage();
+		else if (key == 'w') frame.moveFrameFromKey(DirectionKey::UP); 
+		else if (key == 'a') frame.moveFrameFromKey(DirectionKey::LEFT);
+		else if (key == 's') frame.moveFrameFromKey(DirectionKey::DOWN);
+		else if (key == 'd') frame.moveFrameFromKey(DirectionKey::RIGHT);
 	}
 	if (bImageLoaded && key == 's') {
 		image.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
@@ -124,7 +129,6 @@ void ofApp::mouseMoved(int x, int y ){
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
 	if (!bImageSelected) return;
-
 	// Find location of new mouse & calculate the delta
 	vec3 newMousePos(x, y, 0);
 	vec3 delta = newMousePos - lastMouse;
@@ -132,7 +136,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 	vec3 newPos = curImgPos + delta;
 
 	if (bScale) {			// if scaling the image
-		frame.processInput(newMousePos);
+		frame.processInput(&newMousePos, &mousePressedLocation);
 	}
 	else if (bTranslate) { 	// if translating the image
 		selectedImg->setImagePosition(newPos);
@@ -144,11 +148,11 @@ void ofApp::mouseDragged(int x, int y, int button){
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button) {
 	if (bImageLoaded) {
-		vec3 point(x, y, 0);
-		if (frame.isInsideHandles(point)) {
+		mousePressedLocation = vec3(x, y, 0);
+		if (frame.isInsideHandles(mousePressedLocation)) {
 			bScale = true;
 		}
-		else if (isInsideImage(point)) {
+		else if (isInsideImage(mousePressedLocation)) {
 			bImageSelected = true;
 			lastMouse = vec3(x, y, 0);
 			bTranslate = true;
