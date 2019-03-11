@@ -18,6 +18,7 @@ private:
 	Handle* selectedHandle;
 	void drawBorder();
 	void drawHandles();
+	bool bUniformScale = false;
 	
 
 public:
@@ -39,8 +40,9 @@ public:
 	void scaleFrame(glm::vec3);
 	void updateImage();
 	void updateFrameDimensions(float, float);
-	void processInput(glm::vec3*, glm::vec3* v = NULL);
+	void processInput(glm::vec3*, glm::vec3* = NULL);
 	void moveFrameFromKey(DirectionKey);
+	inline void setUniformScale(bool b) { bUniformScale = b; }
 
 
 

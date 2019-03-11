@@ -23,6 +23,6 @@ class Handle {
 		void setYPos(float);
 		bool isInsideHandle(glm::vec3);
 
-		virtual void mouseDrag(glm::vec3*, glm::vec3* v = NULL) = 0;
+		virtual void mouseDrag(glm::vec3*, glm::vec3* = NULL, bool = false) = 0;
 		void setFrame(Frame *f);
 };

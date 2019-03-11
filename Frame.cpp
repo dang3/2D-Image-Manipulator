@@ -83,8 +83,8 @@ void Frame::moveFrameFromKey(DirectionKey dir) {
 	updateImage();
 }
 
-void Frame::processInput(vec3* point1, vec3* point2) {
-	selectedHandle->mouseDrag(point1, point2);
+void Frame::processInput(vec3* point2, vec3* point1) {
+	selectedHandle->mouseDrag(point2, point1, bUniformScale);
 }
 
 void Frame::updateFrameDimensions(float newWidth, float newHeight) {
@@ -94,9 +94,9 @@ void Frame::updateFrameDimensions(float newWidth, float newHeight) {
 }
 
 void Frame::updateImage() {
+	curImage->setImagePosition(vec3(xPos, yPos, 0));
 	curImage->setWidth(width);
 	curImage->setHeight(height);
-	curImage->setImagePosition(vec3(xPos, yPos, 0));
 	setHandlePositions();
 }
 

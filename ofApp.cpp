@@ -109,6 +109,7 @@ void ofApp::keyPressed(int key){
 		else if (key == 'a') frame.moveFrameFromKey(DirectionKey::LEFT);
 		else if (key == 's') frame.moveFrameFromKey(DirectionKey::DOWN);
 		else if (key == 'd') frame.moveFrameFromKey(DirectionKey::RIGHT);
+		else if (key == OF_KEY_SHIFT) frame.setUniformScale(true);	// enable uniform scale
 	}
 	if (bImageLoaded && key == 's') {
 		image.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
@@ -118,7 +119,7 @@ void ofApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+	if (key == OF_KEY_SHIFT) frame.setUniformScale(false);	// disable uniform scale
 }
 
 //--------------------------------------------------------------

@@ -7,7 +7,7 @@ RotateHandle::RotateHandle() {
 	height = 10;
 }
 
-void RotateHandle::mouseDrag(vec3* point1, vec3* point2) {
+void RotateHandle::mouseDrag(vec3* point1, vec3* point2, bool shiftPressed) {
 	double deltaY = point2->y - point1->y;
 	double deltaX = point2->x - point1->x;
 	double theta = atan(deltaY/deltaX)* 180 / pi<float>();
