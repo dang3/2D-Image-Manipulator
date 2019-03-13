@@ -3,6 +3,9 @@
 #include "ofMain.h"
 
 class Image {
+private:
+	double angle = 0;
+
 public:
 	ofImage img;
 	float imageWidth;
@@ -25,6 +28,11 @@ public:
 	void setHeight(float);
 
 	int position;
+	float getXPos();
+	float getYPos();
+	inline double getAngle() { return angle; }
+	inline void setAngle(double d) { angle = d; }
+
 
 	// Not sure if these will be necessary
 	glm::vec3 getImagePosition();

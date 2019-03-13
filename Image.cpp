@@ -49,6 +49,14 @@ void Image::scaleImage(vec3 point) {
 	imageHeight = point.y - imagePosition.y;
 }
 
+float Image::getXPos() {
+	return imagePosition.x;
+}
+
+float Image::getYPos() {
+	return imagePosition.y;
+}
+
 void Image::setImagePosition(vec3 pos) {
 	this->imagePosition = pos;
 }
@@ -62,5 +70,6 @@ void Image::setPosition(int position) {
 }
 
 void Image::draw() {
-	img.draw(imagePosition, imageWidth, imageHeight);
+	vec3 origin(0, 0, 0);
+	img.draw(origin, imageWidth, imageHeight);
 }

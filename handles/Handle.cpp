@@ -43,7 +43,11 @@ void Handle::setYPos(float yPos) {
 }
 
 void Handle::draw() {
-	ofDrawRectangle(xPos, yPos, width, height);
+	ofPushMatrix();
+	ofTranslate(xPos, yPos);
+	ofDrawRectangle(0, 0, width, height);
+	ofPopMatrix();
+
 }
 
 void Handle::setFrame(Frame *f) {

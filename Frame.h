@@ -19,6 +19,7 @@ private:
 	void drawBorder();
 	void drawHandles();
 	bool bUniformScale = false;
+	double angle = 0;
 	
 
 public:
@@ -43,6 +44,8 @@ public:
 	void processInput(glm::vec3*, glm::vec3* = NULL);
 	void moveFrameFromKey(DirectionKey);
 	inline void setUniformScale(bool b) { bUniformScale = b; }
+	inline void setAngle(double d) { angle = d; updateImage(); }
+	inline double getAngle() { return angle; }
 
 
 

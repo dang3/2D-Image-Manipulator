@@ -1,4 +1,5 @@
 #include "RotateHandle.h"
+#include "../Frame.h"
 
 using namespace glm;
 
@@ -10,8 +11,8 @@ RotateHandle::RotateHandle() {
 void RotateHandle::mouseDrag(vec3* point1, vec3* point2, bool shiftPressed) {
 	double deltaY = point2->y - point1->y;
 	double deltaX = point2->x - point1->x;
-	double theta = atan(deltaY/deltaX)* 180 / pi<float>();
+	double angle = atan(deltaY/deltaX)* 180 / pi<float>();
 	//cout << "point1: " << *point1 << "  " << "point2: " << *point2 << endl;
-	cout << theta << endl;
+	frame->setAngle(angle);
 	
 }

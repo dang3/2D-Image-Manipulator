@@ -12,7 +12,6 @@ Frame::Frame() {
 	ScaleHandle *handle4 = new ScaleHandle_BOT_RIGHT();
 	RotateHandle *handle5 = new RotateHandle();
 	
-
 	handles.push_back(handle1);
 	handles.push_back(handle2);
 	handles.push_back(handle3);
@@ -41,13 +40,13 @@ void Frame::test() {
 }
 
 void Frame::setHandlePositions() {
-	// set frame dimensions
+	// set handle dimensions
 	xPos = curImage->getImagePosition().x;
 	yPos = curImage->getImagePosition().y;
 	width = curImage->getImageWidth();
 	height = curImage->getImageHeight();
 
-	// set frame x & y positions
+	// set handle x & y positions
 	handles[0]->setXPos(xPos - scaleHandleWidth / 2);
 	handles[0]->setYPos(yPos - scaleHandleHeight / 2);
 
@@ -62,6 +61,11 @@ void Frame::setHandlePositions() {
 
 	handles[4]->setXPos(xPos + width / 2);
 	handles[4]->setYPos(yPos-rotateHandleHeight);
+
+	// set handle orientatin
+	for (int i = 0; i < handles.size(); i++) {
+		handles[i]->setAngle(angle);
+	}
 }
 
 void Frame::setImage(Image *img) {
@@ -97,6 +101,7 @@ void Frame::updateImage() {
 	curImage->setImagePosition(vec3(xPos, yPos, 0));
 	curImage->setWidth(width);
 	curImage->setHeight(height);
+	curImage->setAngle(angle);
 	setHandlePositions();
 }
 
@@ -124,7 +129,12 @@ void Frame::drawBorder() {
 	float yPos = curImage->getImagePosition().y;
 	float borderWidth = curImage->getImageWidth();
 	float borderHeight = curImage->getImageHeight();
-	ofDrawRectangle(xPos, yPos, borderWidth, borderHeight);
+
+	ofPushMatrix();
+	ofTranslate(xPos, yPos);
+	ofDrawRectangle(0, 0, borderWidth, borderHeight);
+	ofPopMatrix();
+
 	ofSetColor(255, 255, 255);
 }
 

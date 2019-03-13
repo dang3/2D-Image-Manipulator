@@ -89,8 +89,11 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 	if (bImageLoaded) {
-		for (vector<Image>::iterator itr = images.begin(); itr != images.end(); itr++) {
-			itr->draw();
+		for (int i = 0; i < images.size(); i++) {
+			ofPushMatrix();
+			ofTranslate(images[i].getXPos(), images[i].getYPos());
+			images[i].draw();
+			ofPopMatrix();
 		}
 
 	}

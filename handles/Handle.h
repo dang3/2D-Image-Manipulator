@@ -11,6 +11,7 @@ class Handle {
 		float width;
 		float height;
 		Frame* frame;
+		double angle = 0;
 
 	public:
 		Handle();
@@ -25,4 +26,6 @@ class Handle {
 
 		virtual void mouseDrag(glm::vec3*, glm::vec3* = NULL, bool = false) = 0;
 		void setFrame(Frame *f);
+		inline void setAngle(double d) { angle = d; }
+		inline double getAngle() { return angle; }
 };
