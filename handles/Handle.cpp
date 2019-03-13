@@ -45,9 +45,12 @@ void Handle::setYPos(float yPos) {
 void Handle::draw() {
 	ofPushMatrix();
 	ofTranslate(xPos, yPos);
+	ofRotate(angle);
+	ofSetColor(255, 255, 255);
+	ofFill();
 	ofDrawRectangle(0, 0, width, height);
+	ofNoFill();
 	ofPopMatrix();
-
 }
 
 void Handle::setFrame(Frame *f) {

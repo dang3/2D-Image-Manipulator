@@ -88,6 +88,7 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	ofBackground(104, 153, 232);
 	if (bImageLoaded) {
 		for (int i = 0; i < images.size(); i++) {
 			ofPushMatrix();
@@ -113,6 +114,8 @@ void ofApp::keyPressed(int key){
 		else if (key == 's') frame.moveFrameFromKey(DirectionKey::DOWN);
 		else if (key == 'd') frame.moveFrameFromKey(DirectionKey::RIGHT);
 		else if (key == OF_KEY_SHIFT) frame.setUniformScale(true);	// enable uniform scale
+		else if (key == 'o') frame.scaleFromKey(DirectionKey::UP);
+		else if (key == 'p') frame.scaleFromKey(DirectionKey::DOWN);
 	}
 	if (bImageLoaded && key == 's') {
 		image.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
@@ -204,6 +207,8 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 		vec3 dropLocation = vec3(dragInfo.position, 0);
 		Image newImage(image, imageWidth, imageHeight, dropLocation, count++);
 		images.push_back(newImage);
+		
+		// look at
 		frame.test();
 	}
 }

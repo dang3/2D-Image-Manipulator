@@ -68,7 +68,20 @@ void Frame::setHandlePositions() {
 	}
 }
 
+void Frame::scaleFromKey(DirectionKey key) {
+	if (key == DirectionKey::UP) {
+		width += scaleSensitivity;
+		height += scaleSensitivity;
+	}
+	else if (key == DirectionKey::DOWN) {
+		width -= scaleSensitivity;
+		height -= scaleSensitivity;
+	}
+	updateImage();
+}
+
 void Frame::setImage(Image *img) {
+	cout << "in\n";
 	this->curImage = img;
 	setHandlePositions();
 }
@@ -129,13 +142,14 @@ void Frame::drawBorder() {
 	float yPos = curImage->getImagePosition().y;
 	float borderWidth = curImage->getImageWidth();
 	float borderHeight = curImage->getImageHeight();
-
+	//cout << xPos << "  " << yPos << endl;	// THIS BECOMES VERY SMALL
 	ofPushMatrix();
 	ofTranslate(xPos, yPos);
+	ofRotate(angle);
 	ofDrawRectangle(0, 0, borderWidth, borderHeight);
 	ofPopMatrix();
 
-	ofSetColor(255, 255, 255);
+	//ofSetColor(255, 255, 255);
 }
 
 void Frame::drawHandles() {
@@ -147,6 +161,7 @@ void Frame::drawHandles() {
 }
 
 void Frame::draw() {
+
 	drawBorder();
 	drawHandles();
 }
@@ -172,5 +187,3 @@ Frame::~Frame() {
 		delete handles[i];
 	}
 }
-
-
