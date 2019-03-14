@@ -15,7 +15,6 @@ class Handle {
 
 	public:
 		Handle();
-		void draw();
 		float getXPos();
 		float getYPos();
 		float getWidth();
@@ -23,9 +22,9 @@ class Handle {
 		void setXPos(float);
 		void setYPos(float);
 		bool isInsideHandle(glm::vec3);
-
 		virtual void mouseDrag(glm::vec3*, glm::vec3* = NULL, bool = false) = 0;
 		void setFrame(Frame *f);
 		inline void setAngle(double d) { angle = d; }
 		inline double getAngle() { return angle; }
+		virtual void draw(float, float, float, float) = 0;
 };

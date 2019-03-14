@@ -3,6 +3,8 @@
 #include "ofMain.h"
 #include "Image.h"
 #include "Frame.h"
+#include "Utils.h"
+
 
 class ofApp : public ofBaseApp{
 	private:
@@ -45,4 +47,7 @@ class ofApp : public ofBaseApp{
 		int count = 0; // used to identify where image is placed in vector
 		glm::vec3 lastMouse;
 		void swapImages(int, int);
+		int index = 0;
+
 };
+

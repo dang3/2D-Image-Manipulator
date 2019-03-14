@@ -3,7 +3,7 @@
 #include "Image.h"
 #include "ofGraphics.h"
 #include "handles/Handle.h"
-#include "Utils.h"
+#include "Utils.h"	
 
 class Frame {
 private:
@@ -16,8 +16,6 @@ private:
 	float height;
 	vector<Handle*> handles;
 	Handle* selectedHandle;
-	void drawBorder();
-	void drawHandles();
 	bool bUniformScale = false;
 	double angle = 0;
 	double scaleSensitivity = 10;
@@ -45,9 +43,11 @@ public:
 	void processInput(glm::vec3*, glm::vec3* = NULL);
 	void moveFrameFromKey(DirectionKey);
 	inline void setUniformScale(bool b) { bUniformScale = b; }
-	inline void setAngle(double d) { angle = d; updateImage(); }
+	void setAngle(double d);
 	inline double getAngle() { return angle; }
 	void scaleFromKey(DirectionKey);
+	void rotateFromKey(DirectionKey);
+	void translateFromKey(DirectionKey);
 
 
 

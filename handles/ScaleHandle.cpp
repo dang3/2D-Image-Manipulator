@@ -74,3 +74,39 @@ void ScaleHandle_TOP_RIGHT::mouseDrag(vec3* point2, vec3*point1, bool uniformSca
 	}
 	frame->updateFrameDimensions(width, height);
 }
+
+void ScaleHandle_BOT_RIGHT::draw(float x, float y, float frameWidth, float frameHeight) {
+	xPos = x + frameWidth - width / 2;
+	yPos = y + frameHeight - height / 2;
+	ofPushMatrix();
+	ofTranslate(frameWidth / 2 - width / 2, frameHeight / 2 - height / 2);
+	ofDrawRectangle(0, 0, width, height);
+	ofPopMatrix();
+}
+
+void ScaleHandle_BOT_LEFT::draw(float x, float y, float frameWidth, float frameHeight) {
+	xPos = x - width / 2;
+	yPos = y + frameHeight - height / 2;
+	ofPushMatrix();
+	ofTranslate(-frameWidth / 2 - width / 2, frameHeight / 2 - height / 2);
+	ofDrawRectangle(0, 0, width, height);
+	ofPopMatrix();
+}
+
+void ScaleHandle_TOP_LEFT::draw(float x, float y, float frameWidth, float frameHeight) {
+	xPos = x - width / 2;
+	yPos = y - height / 2;
+	ofPushMatrix();
+	ofTranslate(-frameWidth / 2 - width / 2, -frameHeight / 2 - height / 2);
+	ofDrawRectangle(0, 0, width, height);
+	ofPopMatrix();
+}
+
+void ScaleHandle_TOP_RIGHT::draw(float x, float y, float frameWidth, float frameHeight) {
+	xPos = x + frameWidth - width / 2;
+	yPos = y-height / 2;
+	ofPushMatrix();
+	ofTranslate(frameWidth / 2 - width / 2, -frameHeight / 2 - height / 2);
+	ofDrawRectangle(0, 0, width, height);
+	ofPopMatrix();
+}

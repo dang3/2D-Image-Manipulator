@@ -37,4 +37,5 @@ public:
 	// Not sure if these will be necessary
 	glm::vec3 getImagePosition();
 	glm::vec3 getImageCenter();
+
 };

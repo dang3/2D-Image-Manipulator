@@ -41,31 +41,11 @@ void Frame::test() {
 
 void Frame::setHandlePositions() {
 	// set handle dimensions
-	xPos = curImage->getImagePosition().x;
-	yPos = curImage->getImagePosition().y;
+	xPos = curImage->getXPos();
+	yPos = curImage->getYPos();
 	width = curImage->getImageWidth();
 	height = curImage->getImageHeight();
-
-	// set handle x & y positions
-	handles[0]->setXPos(xPos - scaleHandleWidth / 2);
-	handles[0]->setYPos(yPos - scaleHandleHeight / 2);
-
-	handles[1]->setXPos(xPos+width - scaleHandleWidth / 2);
-	handles[1]->setYPos(yPos - scaleHandleHeight / 2);
-
-	handles[2]->setXPos(xPos - scaleHandleWidth / 2);
-	handles[2]->setYPos(yPos+height - scaleHandleHeight / 2);
-
-	handles[3]->setXPos(xPos+width - scaleHandleWidth / 2);
-	handles[3]->setYPos(yPos+height - scaleHandleHeight / 2);
-
-	handles[4]->setXPos(xPos + width / 2);
-	handles[4]->setYPos(yPos-rotateHandleHeight);
-
-	// set handle orientatin
-	for (int i = 0; i < handles.size(); i++) {
-		handles[i]->setAngle(angle);
-	}
+	angle = curImage->getAngle();
 }
 
 void Frame::scaleFromKey(DirectionKey key) {
@@ -81,7 +61,6 @@ void Frame::scaleFromKey(DirectionKey key) {
 }
 
 void Frame::setImage(Image *img) {
-	cout << "in\n";
 	this->curImage = img;
 	setHandlePositions();
 }
@@ -104,6 +83,11 @@ void Frame::processInput(vec3* point2, vec3* point1) {
 	selectedHandle->mouseDrag(point2, point1, bUniformScale);
 }
 
+void Frame::setAngle(double d) { 
+	angle = d; 
+	updateImage(); 
+}
+
 void Frame::updateFrameDimensions(float newWidth, float newHeight) {
 	this->width = newWidth;
 	this->height = newHeight;
@@ -115,7 +99,6 @@ void Frame::updateImage() {
 	curImage->setWidth(width);
 	curImage->setHeight(height);
 	curImage->setAngle(angle);
-	setHandlePositions();
 }
 
 float Frame::getXPos() {
@@ -134,37 +117,41 @@ float Frame::getHeight() {
 	return height;
 }
 
-void Frame::drawBorder() {
-	ofSetLineWidth(2);
-	ofSetColor(255, 255, 127);
-	ofNoFill();
-	float xPos = curImage->getImagePosition().x;
-	float yPos = curImage->getImagePosition().y;
-	float borderWidth = curImage->getImageWidth();
-	float borderHeight = curImage->getImageHeight();
-	//cout << xPos << "  " << yPos << endl;	// THIS BECOMES VERY SMALL
-	ofPushMatrix();
-	ofTranslate(xPos, yPos);
-	ofRotate(angle);
-	ofDrawRectangle(0, 0, borderWidth, borderHeight);
-	ofPopMatrix();
-
-	//ofSetColor(255, 255, 255);
-}
-
-void Frame::drawHandles() {
-	ofSetColor(255, 0, 0);
-	for (int i = 0; i < handles.size(); i++) {
-		handles[i]->draw();
-	}
-	ofSetColor(255, 255, 255);
+void Frame::rotateFromKey(DirectionKey key) {
+	if (key == DirectionKey::UP) setAngle(angle + 2);
+	else if (key == DirectionKey::DOWN) setAngle(angle - 2);
 }
 
 void Frame::draw() {
+	ofSetLineWidth(2);
+	ofSetColor(255, 255, 127);
+	ofNoFill();
+	ofPushMatrix();
+	//ofTranslate(xPos, yPos);
 
-	drawBorder();
-	drawHandles();
+	ofTranslate(xPos + width / 2, yPos + height / 2);
+	ofRotate(angle);
+	ofPushMatrix(); 
+		ofDrawRectangle(-width/2, -height/2, width, height);	// draws border
+
+	 // draw handles
+	ofSetColor(255, 0, 0);
+	for (int i = 0; i < handles.size(); i++) {
+		handles[i]->draw(xPos, yPos, width, height);
+	}
+	ofSetColor(255, 255, 255); 
+	ofPopMatrix();
+	ofPopMatrix();
 }
+
+void Frame::translateFromKey(DirectionKey key) {
+	if (key == DirectionKey::UP) setYPos(yPos - 5);
+	else if (key == DirectionKey::DOWN) setYPos(yPos + 5);
+	else if (key == DirectionKey::LEFT) setXPos(xPos - 5);
+	else if (key == DirectionKey::RIGHT) setXPos(xPos + 5);
+	updateImage();
+}
+
 
 void Frame::setXPos(float xPos) {
 	this->xPos = xPos;

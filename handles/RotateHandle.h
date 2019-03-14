@@ -6,4 +6,5 @@ class RotateHandle : public Handle {
 public:
 	RotateHandle();
 	void mouseDrag(glm::vec3*, glm::vec3* = NULL, bool = false);
+	void draw(float, float, float, float);
 };

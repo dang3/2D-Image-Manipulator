@@ -1,4 +1,5 @@
 #include "ofApp.h"
+#include "Utils.h"
 
 using namespace glm;
 
@@ -69,7 +70,8 @@ bool ofApp::isInsideImage(vec3 point) {
 		float y2 = y1 + curImage.getImageHeight();
 		if (point.x >= x1 && point.x <= x2 && point.y >= y1 && point.y <= y2) {
 			selectedImg = &images[i];
-			frame.setImage(selectedImg);
+			index = i;
+			frame.setImage(&images[i]);
 			return true;
 		}
 	}
@@ -91,12 +93,23 @@ void ofApp::draw(){
 	ofBackground(104, 153, 232);
 	if (bImageLoaded) {
 		for (int i = 0; i < images.size(); i++) {
-			ofPushMatrix();
-			ofTranslate(images[i].getXPos(), images[i].getYPos());
-			images[i].draw();
+			float imgXPos = images[i].getXPos();
+			float imgYPos = images[i].getYPos();
+			float imgWidth = images[i].getImageWidth();
+			float imgHeight = images[i].getImageHeight();
+
+			// draw image about its center
+			ofPushMatrix(); {
+				ofTranslate(imgXPos + imgWidth / 2, imgYPos + imgHeight / 2);
+				ofRotate(images[i].getAngle());
+				ofPushMatrix(); {
+					ofTranslate(-imgWidth / 2, -imgHeight / 2);
+					images[i].draw();
+				}
+				ofPopMatrix();
+			}
 			ofPopMatrix();
 		}
-
 	}
 	if (bImageSelected) {
 		frame.draw();
@@ -106,8 +119,8 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 	if (bImageSelected && selectedImg != nullptr) {
-		if (key == OF_KEY_UP) moveImageUpStack();
-		else if (key == OF_KEY_DOWN) moveImageDownStack();
+		if (key == OF_KEY_PAGE_UP) moveImageUpStack();
+		else if (key == OF_KEY_PAGE_DOWN) moveImageDownStack();
 		else if (key == OF_KEY_DEL) deleteSelectedImage();
 		else if (key == 'w') frame.moveFrameFromKey(DirectionKey::UP); 
 		else if (key == 'a') frame.moveFrameFromKey(DirectionKey::LEFT);
@@ -116,6 +129,12 @@ void ofApp::keyPressed(int key){
 		else if (key == OF_KEY_SHIFT) frame.setUniformScale(true);	// enable uniform scale
 		else if (key == 'o') frame.scaleFromKey(DirectionKey::UP);
 		else if (key == 'p') frame.scaleFromKey(DirectionKey::DOWN);
+		else if (key == 'z') frame.rotateFromKey(DirectionKey::UP);	// clockwise rotation
+		else if (key == 'x') frame.rotateFromKey(DirectionKey::DOWN);	// counter-clockwise rotation
+		else if (key == OF_KEY_UP) frame.translateFromKey(DirectionKey::UP);
+		else if (key == OF_KEY_DOWN) frame.translateFromKey(DirectionKey::DOWN);
+		else if (key == OF_KEY_LEFT) frame.translateFromKey(DirectionKey::LEFT);
+		else if (key == OF_KEY_RIGHT) frame.translateFromKey(DirectionKey::RIGHT);
 	}
 	if (bImageLoaded && key == 's') {
 		image.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
@@ -167,6 +186,7 @@ void ofApp::mousePressed(int x, int y, int button) {
 		else {
 			bImageSelected = false;
 			selectedImg = nullptr;
+			index = 0;
 		}
 	}
 }
@@ -208,7 +228,12 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 		Image newImage(image, imageWidth, imageHeight, dropLocation, count++);
 		images.push_back(newImage);
 		
-		// look at
+		// update selected Image pointer to point to previously selected image
+		if (selectedImg != nullptr) {
+			selectedImg = &images[index];
+			frame.setImage(&images[index]);
+		}
+		
 		frame.test();
 	}
 }

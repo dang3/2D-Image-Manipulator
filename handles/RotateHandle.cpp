@@ -8,11 +8,15 @@ RotateHandle::RotateHandle() {
 	height = 10;
 }
 
+void RotateHandle::draw(float x, float y, float frameWidth, float frameHeight) {
+	xPos = x + frameWidth / 2 - width / 2;
+	yPos = y - 40 - height / 2;
+	ofPushMatrix();
+	ofTranslate(-width / 2, -frameHeight / 2 - 40 - height / 2);
+	ofDrawRectangle(0, 0, width, height);
+	ofPopMatrix();
+}
+
 void RotateHandle::mouseDrag(vec3* point1, vec3* point2, bool shiftPressed) {
-	double deltaY = point2->y - point1->y;
-	double deltaX = point2->x - point1->x;
-	double angle = atan(deltaY / deltaX); // angle in radians
-	//cout << "point1: " << *point1 << "  " << "point2: " << *point2 << endl;
-	//frame->setAngle(angle);
-	
+	frame->setAngle(point1->x - point2->x);
 }
